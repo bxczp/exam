@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+    "http://struts.apache.org/dtds/struts-2.3.dtd">
+
+<struts>
+<!-- 错误：“The content of element type "package" must match "。。。。” -->
+<!-- 原因：package里元素必须按照一定的顺序排列： -->
+<!-- result-types -->
+<!-- interceptors -->
+<!-- default-interceptor-ref -->
+<!-- default-action-ref -->
+<!-- default-class-ref -->
+<!-- global-results -->
+<!-- global-exception-mappings -->
+<!-- action*（所有action放到最后） -->
+
+	<package name="exam" namespace="/" extends="struts-default">
+
+		<interceptors>
+			<interceptor name="loginInterceptor" class="Web.LoginInterceptor"></interceptor>
+			<interceptor-stack name="myStack">
+				<interceptor-ref name="loginInterceptor"></interceptor-ref>
+				<interceptor-ref name="defaultStack"></interceptor-ref>
+			</interceptor-stack>
+		</interceptors>
+
+
+		<default-interceptor-ref name="myStack"></default-interceptor-ref>
+
+		<global-results>
+			<result name="login">/login.jsp</result>
+		</global-results>
+
+
+
+		<action name="student" class="Web.StudentAction">
+			<!-- 重定向 -->
+			<result name="logout" type="redirect">/login.jsp</result>
+			<!-- 默认是转发 -->
+			<result name="success">/main.jsp</result>
+			<result name="error">/login.jsp</result>
+			<result name="saveStudent" type="redirectAction">student!list</result>
+			<interceptor-ref name="defaultStack"></interceptor-ref>
+
+		</action>
+
+		<action name="paper" class="Web.PaperAction">
+			<result name="success">/main.jsp</result>
+			<result name="paperSave" type="redirectAction">paper!paperList</result>
+		</action>
+
+		<action name="exam" class="Web.ExamAction">
+			<result name="success">/main.jsp</result>
+		</action>
+
+
+		<action name="manager" class="Web.ManagerAction">
+			<!-- 重定向 -->
+			<result name="logout" type="redirect">/login2.jsp</result>
+			<!-- 默认是转发 -->
+			<result name="success">/main.jsp</result>
+			<result name="error">/login2.jsp</result>
+			<interceptor-ref name="defaultStack"></interceptor-ref>
+		</action>
+
+
+		<action name="question" class="Web.QuestionAction">
+			<!-- 默认是转发 -->
+			<result name="success">/main.jsp</result>
+			<result name="questionSave" type="redirectAction">question!list</result>
+		</action>
+
+	</package>
+
+
+</struts>
